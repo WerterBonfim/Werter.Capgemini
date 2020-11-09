@@ -1,0 +1,10 @@
+{
+    "git.enabled": true,
+    "files.exclude": {
+        ".vscode": true,
+        ".gitignore": true,
+        "README.md": false,
+        "Backend": true,
+        "Frontend": true
+    }
+}

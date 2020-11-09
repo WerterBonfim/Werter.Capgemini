@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  banco-sqlserver:
+    container_name: app.sqlserver
+    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+    environment:
+      - ACCEPT_EULA=y
+      - SA_PASSWORD=!123Senha
+      - MSSQL_PID=Express
+    ports:
+      - 1433:1433        
+
+  api:
+    container_name: app.web.api
+    image: mcr.microsoft.com/dotnet/core/aspnet:3.1.8-alpine3.12
+    build:
+      context: Backend/Werter.Capgemini.WebApi/
+      dockerfile: Dockerfile        
+    ports:
+      - "5100:5100"
+      - "5101:5101"      
+    environment:      
+      - ConnectionStrings__DefaultConnection=Server=banco-sqlserver,1433;Database=Capgemini;User Id=sa;Password=!123Senha;MultipleActiveResultSets=true;
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:5101    
+    depends_on:
+      - banco-sqlserver        
+  
+  # frontend:
+  #   container_name: app.frontend
